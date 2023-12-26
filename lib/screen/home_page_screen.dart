@@ -7,17 +7,14 @@ class HomePageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('UP & DOWN GAME'),
-        backgroundColor: const Color.fromARGB(255, 146, 178, 238),
-        shadowColor: Colors.grey,
-      ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Image.asset('assets/images/main_up_down.png'),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
+              alignment: Alignment.bottomCenter,
               width: MediaQuery.of(context).size.width * 0.8,
               child: ElevatedButton(
                 onPressed: () {
@@ -29,6 +26,10 @@ class HomePageScreen extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green[300],
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(10.0), // 원하는 BorderRadius 값으로 조절
+                  ),
                 ),
                 child: const Text(
                   'Start GAME',
