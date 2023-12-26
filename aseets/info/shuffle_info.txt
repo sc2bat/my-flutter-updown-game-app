@@ -1,0 +1,10 @@
+https://deckofcardsapi.com/
+
+deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1
+
+{"success": true, "deck_id": "o1x96vsy8lns", "remaining": 52, "shuffled": true}
+
+https://deckofcardsapi.com/api/deck/o1x96vsy8lns/draw/?count=1
+https://deckofcardsapi.com/api/deck/o1x96vsy8lns/draw/?count=2
+https://deckofcardsapi.com/api/deck/o1x96vsy8lns/draw/?count=3
+https://deckofcardsapi.com/api/deck/o1x96vsy8lns/draw/?count=4

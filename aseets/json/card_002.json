@@ -1,0 +1,27 @@
+{
+  "success": true,
+  "deck_id": "o1x96vsy8lns",
+  "cards": [
+    {
+      "code": "KC",
+      "image": "https://deckofcardsapi.com/static/img/KC.png",
+      "images": {
+        "svg": "https://deckofcardsapi.com/static/img/KC.svg",
+        "png": "https://deckofcardsapi.com/static/img/KC.png"
+      },
+      "value": "KING",
+      "suit": "CLUBS"
+    },
+    {
+      "code": "2H",
+      "image": "https://deckofcardsapi.com/static/img/2H.png",
+      "images": {
+        "svg": "https://deckofcardsapi.com/static/img/2H.svg",
+        "png": "https://deckofcardsapi.com/static/img/2H.png"
+      },
+      "value": "2",
+      "suit": "HEARTS"
+    }
+  ],
+  "remaining": 40
+}
