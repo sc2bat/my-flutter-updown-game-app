@@ -5,12 +5,11 @@ import 'package:updown_game_app/model/card.dart';
 import 'package:http/http.dart' as http;
 
 class CardApiService {
-  static String shuffledCardUrl =
+  static const shuffledCardUrl =
       'deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1';
-  String pickCardUrl =
-      'https://deckofcardsapi.com/api/deck/deck_id/draw/?count=1';
+  static const pickCardUrl = 'https://deckofcardsapi.com/api/deck/';
 
-  Future<String> getSuffledCardApi() async {
+  Future<String> getDeckIdApi() async {
     logger.info('qwerasdf start getSuffledCardApi');
     var deckId = '';
     final response = await http.get(Uri.parse(shuffledCardUrl));
@@ -23,13 +22,22 @@ class CardApiService {
     return deckId;
   }
 
-  Future<void> getPickCardApi() async {
+  Future<void> getPickCardsApi() async {
     logger.info('qwerasdf getPickCardApi getPickCardApi');
-    Future<String> deckId = getSuffledCardApi();
+    List<Card> card;
+
+    Future<String> deckId = getDeckIdApi();
     logger.info('qwerasdf $deckId');
 
-    logger.info('qwerasdf ');
-    logger.info('qwerasdf ');
+    final response =
+        await http.get(Uri.parse('$pickCardUrl$deckId/draw/?count=1'));
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonData = jsonDecode(response.body);
+      final List<dynamic> cardsJson = jsonData['cards'];
+      logger.info('qwerasdf cardsJson lenght ${cardsJson.length}');
+      card = cardsJson.map((e) => Card.fromJson(e)).toList();
+    }
+
     logger.info('qwerasdf done getPickCardApi getPickCardApi');
   }
 }
