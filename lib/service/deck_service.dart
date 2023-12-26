@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:updown_game_app/logger/logger.dart';
 import 'package:updown_game_app/model/deck_model.dart';
 import 'package:updown_game_app/model/draw_card_model.dart';

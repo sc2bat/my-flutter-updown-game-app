@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:updown_game_app/logger/logger.dart';
-import 'package:updown_game_app/model/deck_model.dart';
+import 'package:updown_game_app/model/card_model.dart';
+import 'package:updown_game_app/model/draw_card_model.dart';
 import 'package:updown_game_app/service/deck_service.dart';
+import 'package:updown_game_app/widget/view_card_widget.dart';
 
 class GamePageScreen extends StatefulWidget {
   const GamePageScreen({super.key});
@@ -29,19 +30,33 @@ class _GamePageScreenState extends State<GamePageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    CardModel dumpCard = CardModel(
+        image: 'https://deckofcardsapi.com/static/img/0H.png',
+        suit: 'HEARTS',
+        value: '10');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Game Page Screen'),
       ),
       body: Column(
         children: [
-          const SizedBox(
-            height: 32.0,
-          ),
+          ViewCardWidget(cardModel: dumpCard),
+          //     ListView.separated(
+          // padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          // scrollDirection: Axis.horizontal,
+          // itemCount: drawCardModel.cards.length,
+          //       itemBuilder: ,
+          //       separatorBuilder: (BuildContext context, int index) => const SizedBox(
+          //   width: 16.0,
+          //     )
+          //     ,
+          //     const SizedBox(
+          //       height: 32.0,
+          //     ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.4,
                 child: ElevatedButton(
                   onPressed: () {},
@@ -58,7 +73,7 @@ class _GamePageScreenState extends State<GamePageScreen> {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.4,
                 child: ElevatedButton(
                   onPressed: () {},
