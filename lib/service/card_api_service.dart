@@ -5,9 +5,21 @@ import 'package:updown_game_app/model/card.dart';
 import 'package:http/http.dart' as http;
 
 class CardApiService {
+  static const baseUrl = 'https://deckofcardsapi.com/api/deck/';
   static const shuffledCardUrl =
       'deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1';
   static const pickCardUrl = 'https://deckofcardsapi.com/api/deck/';
+
+  Uri _uri(String path, [Map<String, dynamic> params = const {}]) {
+    String queryString = '';
+    if (params.isNotEmpty) {
+      queryString += '?';
+      params.forEach((key, value) {
+        queryString += '$key=${value.toString()}&';
+      });
+    }
+    return Uri.parse('$baseUrl$path$queryString');
+  }
 
   Future<String> getDeckIdApi() async {
     logger.info('qwerasdf start getSuffledCardApi');
