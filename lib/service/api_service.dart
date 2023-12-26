@@ -1,16 +1,7 @@
-import 'dart:convert';
-
-import 'package:updown_game_app/logger/logger.dart';
-import 'package:updown_game_app/model/card.dart';
-import 'package:http/http.dart' as http;
-
-class CardApiService {
+class ApiService {
   static const baseUrl = 'https://deckofcardsapi.com/api/deck/';
-  static const shuffledCardUrl =
-      'deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1';
-  static const pickCardUrl = 'https://deckofcardsapi.com/api/deck/';
 
-  Uri _uri(String path, [Map<String, dynamic> params = const {}]) {
+  Uri getUrl(String path, [Map<String, dynamic> params = const {}]) {
     String queryString = '';
     if (params.isNotEmpty) {
       queryString += '?';
@@ -20,6 +11,10 @@ class CardApiService {
     }
     return Uri.parse('$baseUrl$path$queryString');
   }
+  /**
+  static const shuffledCardUrl =
+      'deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1';
+  static const pickCardUrl = 'https://deckofcardsapi.com/api/deck/';
 
   Future<String> getDeckIdApi() async {
     logger.info('qwerasdf start getSuffledCardApi');
@@ -52,4 +47,5 @@ class CardApiService {
 
     logger.info('qwerasdf done getPickCardApi getPickCardApi');
   }
+   */
 }

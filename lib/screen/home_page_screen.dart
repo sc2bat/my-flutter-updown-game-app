@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePageScreen extends StatelessWidget {
   const HomePageScreen({super.key});
@@ -7,52 +8,39 @@ class HomePageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('up & down game'),
-        backgroundColor: const Color(0xFFE6A8D7),
+        title: const Text('UP & DOWN GAME'),
+        backgroundColor: const Color.fromARGB(255, 146, 178, 238),
         shadowColor: Colors.grey,
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Text('qwerasdf'),
-            Text('qwerasdf'),
-            Image.network('https://deckofcardsapi.com/static/img/KC.png'),
-            const SizedBox(
-              height: 32.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue[300]),
-                  child: const Text(
-                    'UP',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+      body: Column(
+        children: [
+          Image.asset('assets/images/main_up_down.png'),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: ElevatedButton(
+                onPressed: () {
+                  context.push(
+                    Uri(
+                      path: '/game',
+                    ).toString(),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green[300],
+                ),
+                child: const Text(
+                  'Start GAME',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 40,
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red[300]),
-                  child: const Text(
-                    'DOWN',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
