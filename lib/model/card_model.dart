@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, constant_identifier_names
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 enum Suit {
   Hearts,
   Clubs,
@@ -64,4 +66,46 @@ class CardModel {
 
   @override
   int get hashCode => image.hashCode ^ suit.hashCode ^ value.hashCode;
+
+  static Suit convertStringToSuit(String suit) {
+    switch (suit.toUpperCase().trim()) {
+      case "HEARTS":
+        return Suit.Hearts;
+      case "CLUBS":
+        return Suit.Clubs;
+      case "DIAMONDS":
+        return Suit.Diamonds;
+      case "SPADES":
+        return Suit.Spades;
+      default:
+        return Suit.Other;
+    }
+  }
+
+  static String convertSuitToString(Suit suit) {
+    switch (suit) {
+      case Suit.Hearts:
+        return "HEARTS";
+      case Suit.Clubs:
+        return "CLUBS";
+      case Suit.Diamonds:
+        return "DIAMONDS";
+      case Suit.Spades:
+        return "SPADES";
+      case Suit.Other:
+        return "Other";
+    }
+  }
+
+  static Color suitColor(Suit suit) {
+    switch (suit) {
+      case Suit.Hearts:
+      case Suit.Clubs:
+        return Colors.red;
+      case Suit.Diamonds:
+      case Suit.Spades:
+      case Suit.Other:
+        return Colors.black;
+    }
+  }
 }

@@ -8,10 +8,9 @@ import 'package:updown_game_app/model/card_model.dart';
 class DrawCardModel {
   final int remaining;
   final List<CardModel> cards;
-
   DrawCardModel({
     required this.remaining,
-    this.cards = const [],
+    required this.cards,
   });
 
   DrawCardModel copyWith({
@@ -35,7 +34,7 @@ class DrawCardModel {
     return DrawCardModel(
       remaining: map['remaining'] as int,
       cards: List<CardModel>.from(
-        (map['cards'] as List<int>).map<CardModel>(
+        (map['cards'] as List<dynamic>).map<CardModel>(
           (x) => CardModel.fromMap(x as Map<String, dynamic>),
         ),
       ),
