@@ -1,4 +1,4 @@
-package com.example.updown_game_app
+package com.game.updownapp
 
 import io.flutter.embedding.android.FlutterActivity
 
