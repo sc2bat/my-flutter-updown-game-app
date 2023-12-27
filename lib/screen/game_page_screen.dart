@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:updown_game_app/const/constants.dart';
 import 'package:updown_game_app/logger/logger.dart';
 import 'package:updown_game_app/model/card_model.dart';
 import 'package:updown_game_app/model/draw_card_model.dart';
 import 'package:updown_game_app/service/deck_service.dart';
 import 'package:updown_game_app/widget/view_card_widget.dart';
-
-import '../widget/page_view_card_widget.dart';
 
 class GamePageScreen extends StatefulWidget {
   const GamePageScreen({super.key});
@@ -16,20 +13,75 @@ class GamePageScreen extends StatefulWidget {
 }
 
 class _GamePageScreenState extends State<GamePageScreen> {
+  List<String> selectUser = [];
+  List<String> compareResult = [];
+  List<String> selectResult = [];
+  DrawCardModel getCards = DrawCardModel(remaining: 1, cards: [
+    CardModel(
+        image: 'https://deckofcardsapi.com/static/img/0H.png',
+        suit: 'HEARTS',
+        value: '10')
+  ]);
+
+  final ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
-
-    getDataTest();
+    initialData();
   }
 
-  Future<void> getDataTest() async {
+  Future<void> initialData() async {
+    getCards = await getDataTest();
+    compareResult = compareCardValues(getCards.cards);
+    logger.info('qwerasdf $compareResult');
+    logger.info('qwerasdf ${compareResult.length}');
+    setState(() {});
+  }
+
+  Future<DrawCardModel> getDataTest() async {
     final deck = await DeckService().getDeckApi();
-    // logger.info('qwerasdf data $deck');
-    // I/flutter (17853): 👻 INFO 2023-12-26 17:26:37.689649 [caller info not available] qwerasdf data DeckModel(deck_id: yu5sdbx8s6ad, shuffled: true, remaining: 52)
-    final draw = await DeckService().getDrawCardsApi(deck, count: 10);
-    // logger.info('qwerasdf draw $draw');
-    // I/flutter (  869): 👻 INFO 2023-12-26 23:29:33.976725 [caller info not available] qwerasdf draw DrawCardModel(remaining: 42, cards: [CardModel(image: https://deckofcardsapi.com/static/img/0C.png, suit: CLUBS, value: 10), CardModel(image: https://deckofcardsapi.com/static/img/QH.png, suit: HEARTS, value: QUEEN), CardModel(image: https://deckofcardsapi.com/static/img/7S.png, suit: SPADES, value: 7), CardModel(image: https://deckofcardsapi.com/static/img/0H.png, suit: HEARTS, value: 10), CardModel(image: https://deckofcardsapi.com/static/img/9D.png, suit: DIAMONDS, value: 9), CardModel(image: https://deckofcardsapi.com/static/img/9H.png, suit: HEARTS, value: 9), CardModel(image: https://deckofcardsapi.com/static/img/3D.png, suit: DIAMONDS, value: 3), CardModel(image: https://deckofcardsapi.com/static/img/7C.png, suit: CLUBS, value: 7), CardModel(image: https://deckofcardsapi.com/static/img/6C.png, suit: CLUBS, value: 6), CardModel(image: https://deckofcardsapi.com/static/img/KC.png, suit: CLUBS, value: KING)])
+    final draw =
+        await DeckService().getDrawCardsApi(deck, count: deck.remaining);
+    return draw;
+  }
+
+  void reset() {
+    selectUser = [];
+    initialData();
+    setState(() {});
+  }
+
+  void scrollDown() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent + 50,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.fastOutSlowIn,
+    );
+    // logger.info('qwerasdf ${_scrollController.position.pixels}');
+    // logger.info('qwerasdf ${_scrollController.position.maxScrollExtent}');
+  }
+
+  List<String> compareCardValues(List<CardModel> cards) {
+    List<String> results = [];
+
+    for (int i = 0; i < cards.length - 1; i++) {
+      String currentValue = cards[i].value;
+      String nextValue = cards[i + 1].value;
+
+      // Compare values and determine the result
+      String result;
+      if (currentValue == nextValue) {
+        result = 'EQUAL';
+      } else if (currentValue.compareTo(nextValue) < 0) {
+        result = 'UP';
+      } else {
+        result = 'DOWN';
+      }
+
+      results.add(result);
+    }
+
+    return results;
   }
 
   @override
@@ -565,24 +617,70 @@ class _GamePageScreenState extends State<GamePageScreen> {
         "suit": "HEARTS"
       }
     ].map((e) => CardModel.fromMap(e)).toList();
-    logger.info('qwerasdf ${cardsList.length}');
-    logger.info('qwerasdf ${cardsList[0]}');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Game Page Screen'),
       ),
       body: Column(
         children: [
+          const SizedBox(
+            height: 32.0,
+          ),
           ViewCardWidget(cardModel: dumpCard02),
           // ViewCardWidget(cards: cardsList),
           // PageViewCardWidget(cards: cardsList),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: 200,
+              child: Column(
+                children: [
+                  selectUser.isNotEmpty
+                      ? Expanded(
+                          child: ListView.builder(
+                            controller: _scrollController,
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemCount: selectUser.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ListTile(
+                                title: Text(
+                                  '${index + 1} 번째 player1 => ${selectUser[index]} | Result => ${selectResult[index]}',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: (selectResult[index] == 'GOOD')
+                                        ? Colors.blue[400]
+                                        : Colors.red[400],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      : const Center(
+                          child: Text(
+                            'No items',
+                          ),
+                        ),
+                ],
+              ),
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.4,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    selectUser.add('UP');
+                    (compareResult[selectUser.length - 1] == selectUser.last)
+                        ? selectResult.add('GOOD')
+                        : selectResult.add('WRONG');
+                    setState(() {});
+                    scrollDown();
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue[300],
                   ),
@@ -599,7 +697,14 @@ class _GamePageScreenState extends State<GamePageScreen> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.4,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    selectUser.add('DOWN');
+                    (compareResult[selectUser.length - 1] != selectUser.last)
+                        ? selectResult.add('GOOD')
+                        : selectResult.add('WRONG');
+                    setState(() {});
+                    scrollDown();
+                  },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red[300]),
                   child: const Text(
@@ -613,6 +718,29 @@ class _GamePageScreenState extends State<GamePageScreen> {
                 ),
               ),
             ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.6,
+              child: ElevatedButton(
+                onPressed: () {
+                  reset();
+                  logger.info('qwerasdf press reset up $selectUser');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple[300],
+                ),
+                child: const Text(
+                  'RESET',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 32.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
