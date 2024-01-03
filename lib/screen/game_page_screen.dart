@@ -24,7 +24,8 @@ class _GamePageScreenState extends State<GamePageScreen> {
         value: '10')
   ]);
 
-  final ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollResultController = ScrollController();
+  final ScrollController scrollCardController = ScrollController();
   @override
   void initState() {
     super.initState();
@@ -55,13 +56,21 @@ class _GamePageScreenState extends State<GamePageScreen> {
   }
 
   void scrollDown() {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent + 50,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.fastOutSlowIn,
-    );
-    // logger.info('qwerasdf ${_scrollController.position.pixels}');
-    // logger.info('qwerasdf ${_scrollController.position.maxScrollExtent}');
+    // if(_scrollResultController.position.)
+    if (_scrollResultController.hasClients) {
+      _scrollResultController.animateTo(
+        _scrollResultController.position.maxScrollExtent + 50,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
+  }
+
+  void scrollCard() {
+    logger.info('qwerasdf ScrollCard');
+    // scrollCardController.animateTo(205,
+    //     duration: const Duration(milliseconds: 500),
+    //     curve: Curves.fastOutSlowIn);
   }
 
   List<String> compareCardValues(List<CardModel> cards) {
@@ -654,9 +663,10 @@ class _GamePageScreenState extends State<GamePageScreen> {
             )
           : Column(
               children: [
-                ViewCardWidget(cardModel: dumpCard02),
-                // ViewCardWidget(cards: cardsList),
-                // PageViewCardWidget(cards: cardsList),
+                ViewCardWidget(
+                  cardModel: dumpCard02,
+                  scrollController: scrollCardController,
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: Container(
@@ -667,7 +677,8 @@ class _GamePageScreenState extends State<GamePageScreen> {
                         selectUser.isNotEmpty
                             ? Expanded(
                                 child: ListView.builder(
-                                  controller: _scrollController,
+                                  reverse: true,
+                                  controller: _scrollResultController,
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
                                   itemCount: selectUser.length,
@@ -754,33 +765,6 @@ class _GamePageScreenState extends State<GamePageScreen> {
                 const SizedBox(
                   height: 56.0,
                 ),
-
-                // reset 버튼 제거 우측 상단으로 이동
-                /**
-          Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.6,
-              child: ElevatedButton(
-                onPressed: () {
-                  reset();
-                  logger.info('qwerasdf press reset up $selectUser');
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple[300],
-                ),
-                child: const Text(
-                  'RESET',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 32.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ),
-           */
               ],
             ),
     );
