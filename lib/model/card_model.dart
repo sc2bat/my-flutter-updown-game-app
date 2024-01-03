@@ -14,7 +14,7 @@ enum Suit {
 class CardModel {
   final String image;
   final String suit;
-  final String value;
+  String value;
   late bool isReverse;
   CardModel({
     required this.image,

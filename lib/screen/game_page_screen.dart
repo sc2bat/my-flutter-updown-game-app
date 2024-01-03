@@ -20,17 +20,11 @@ class _GamePageScreenState extends State<GamePageScreen> {
   List<String> selectResult = [];
   bool _isLoading = true;
 
-  DrawCardModel getCards = DrawCardModel(remaining: 1, cards: [
-    CardModel(
-        image: 'https://deckofcardsapi.com/static/img/0H.png',
-        suit: 'HEARTS',
-        value: '10')
-  ]);
-
   final ScrollController _scrollResultController = ScrollController();
   final ScrollController scrollCardController = ScrollController();
 
-  final cardsList = CardRepository().getCardList;
+  late List<CardModel> cardsList;
+
   @override
   void initState() {
     super.initState();
@@ -39,15 +33,18 @@ class _GamePageScreenState extends State<GamePageScreen> {
 
   Future<void> initialData() async {
     _isLoading = true;
-    // getCards = await getDataTest();
+    DrawCardModel getCards = await getData();
+    cardsList = getCards.cards;
     compareResult = compareCardValues(cardsList);
     _isLoading = false;
     cardsList[0].isReverse = true;
     setState(() {});
   }
 
-  Future<DrawCardModel> getDataTest() async {
+  Future<DrawCardModel> getData() async {
     final deck = await DeckService().getDeckApi();
+    logger.info('qwerasdf getDataTest');
+    logger.info('qwerasdf ${deck.remaining}');
     final draw =
         await DeckService().getDrawCardsApi(deck, count: deck.remaining);
     return draw;
@@ -100,9 +97,29 @@ class _GamePageScreenState extends State<GamePageScreen> {
   List<String> compareCardValues(List<CardModel> cards) {
     List<String> results = [];
 
+    for (var card in cards) {
+      switch (card.value) {
+        case 'ACE':
+          card.value = '1';
+          break;
+        case 'JACK':
+          card.value = '11';
+          break;
+        case 'QUEEN':
+          card.value = '12';
+          break;
+        case 'KING':
+          card.value = '13';
+          break;
+        default:
+          // 다른 경우에 대한 처리 (필요에 따라 추가)
+          break;
+      }
+    }
+
     for (int i = 0; i < cards.length - 1; i++) {
-      String currentValue = cards[i].value;
-      String nextValue = cards[i + 1].value;
+      int currentValue = int.parse(cards[i].value);
+      int nextValue = int.parse(cards[i + 1].value);
 
       // Compare values and determine the result
       String result;
