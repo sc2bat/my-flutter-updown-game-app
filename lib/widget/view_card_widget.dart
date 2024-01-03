@@ -21,29 +21,31 @@ class ViewCardWidget extends StatefulWidget {
 
 class _ViewCardWidgetState extends State<ViewCardWidget> {
   final ScrollController _scrollController = ScrollController();
+
+  int targetIndex = 0;
+
+  void scrollToIndex(int index) {
+    _scrollController.animateTo(
+      index * (CARD_WIDTH * widget.size * 1.6 + 8.0), // 각 아이템의 너비 + 간격
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    var moveWidth = CARD_WIDTH * widget.size * 1.9;
+    // var moveWidth = CARD_WIDTH * widget.size * 1.9;
+    // var moveWidth = 214.0;
+
     return Row(
       children: [
         ElevatedButton(
           onPressed: () {
-            if (_scrollController.offset >= moveWidth) {
-              logger.info('qwerasdf move left');
-              _scrollController.animateTo(
-                _scrollController.offset - moveWidth,
-                duration: const Duration(milliseconds: 500), // 애니메이션 지속 시간
-                curve: Curves.easeInOut, // 애니메이션 커브
-              );
-            } else {
-              _scrollController.animateTo(
-                0,
-                duration: const Duration(milliseconds: 500), // 애니메이션 지속 시간
-                curve: Curves.easeInOut, // 애니메이션 커브
-              );
-            }
+            --targetIndex;
+            scrollToIndex(targetIndex);
+            if (targetIndex < 0) 0;
           },
-          child: Icon(
+          child: const Icon(
             Icons.arrow_left,
           ),
         ),
@@ -97,22 +99,11 @@ class _ViewCardWidgetState extends State<ViewCardWidget> {
         ),
         ElevatedButton(
           onPressed: () {
-            if (_scrollController.offset <= moveWidth * 6) {
-              logger.info('qwerasdf ${_scrollController.offset + moveWidth}');
-              _scrollController.animateTo(
-                _scrollController.offset + moveWidth - 40,
-                duration: const Duration(milliseconds: 500), // 애니메이션 지속 시간
-                curve: Curves.easeInOut, // 애니메이션 커브
-              );
-            } else {
-              _scrollController.animateTo(
-                moveWidth * 6,
-                duration: const Duration(milliseconds: 500), // 애니메이션 지속 시간
-                curve: Curves.easeInOut, // 애니메이션 커브
-              );
-            }
+            ++targetIndex;
+            scrollToIndex(targetIndex);
+            if (targetIndex > 6) 5;
           },
-          child: Icon(
+          child: const Icon(
             Icons.arrow_right,
           ),
         ),
