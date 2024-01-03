@@ -117,6 +117,8 @@ class _GamePageScreenState extends State<GamePageScreen> {
       results.add(result);
     }
 
+    // logger.info('qwerasdf compareCardValues result $results');
+
     return results;
   }
 
@@ -250,7 +252,7 @@ class _GamePageScreenState extends State<GamePageScreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           selectUser.add('DOWN');
-                          (compareResult[selectUser.length - 1] !=
+                          (compareResult[selectUser.length - 1] ==
                                   selectUser.last)
                               ? selectResult.add('GOOD')
                               : selectResult.add('WRONG');
