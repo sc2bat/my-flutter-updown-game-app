@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:updown_game_app/const/constants.dart';
 import 'package:updown_game_app/logger/logger.dart';
 import 'package:updown_game_app/model/card_model.dart';
 import 'package:updown_game_app/model/draw_card_model.dart';
@@ -80,17 +81,16 @@ class _GamePageScreenState extends State<GamePageScreen> {
   }
 
   void scrollCard() {
-    logger.info('qwerasdf ScrollCard');
+    // logger.info('qwerasdf ScrollCard');
     if (selectResult.isEmpty) {
       cardsList[selectResult.length - 1].isReverse = true;
     }
 
     cardsList[selectResult.length].isReverse = true;
     setState(() {});
-    logger.info('qwerasdf cardsList[1].isReverse ${cardsList[1].isReverse}');
     if (scrollCardController.hasClients) {
       scrollCardController.animateTo(
-        scrollCardController.offset + 220,
+        CARD_WIDTH * 1.8 * selectUser.length + 16.0 * selectUser.length,
         duration: const Duration(milliseconds: 500),
         curve: Curves.fastOutSlowIn,
       );
@@ -201,9 +201,15 @@ class _GamePageScreenState extends State<GamePageScreen> {
                                   },
                                 ),
                               )
-                            : const Center(
-                                child: Text(
-                                  'No items',
+                            : const Padding(
+                                padding: EdgeInsets.all(16.0),
+                                child: Center(
+                                  child: Text(
+                                    'Click UP & DOWN !!!',
+                                    style: TextStyle(
+                                        fontSize: 32.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                               ),
                       ],

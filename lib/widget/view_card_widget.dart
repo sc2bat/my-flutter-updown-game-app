@@ -5,13 +5,11 @@ import 'package:updown_game_app/model/card_model.dart';
 
 class ViewCardWidget extends StatefulWidget {
   final List<CardModel> cardList;
-  final double size;
   final ScrollController scrollController;
 
   const ViewCardWidget({
     super.key,
     required this.cardList,
-    this.size = 1.0,
     required this.scrollController,
   });
 
@@ -27,8 +25,8 @@ class _ViewCardWidgetState extends State<ViewCardWidget> {
     // logger.info('qwerasdf cart length ${widget.cardList.length}');
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      width: CARD_WIDTH * widget.size * 2.4,
-      height: CARD_HEIGHT * widget.size * 2.0,
+      width: CARD_WIDTH * 2.4,
+      height: CARD_HEIGHT * 2.0,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           controller: widget.scrollController,
@@ -39,8 +37,8 @@ class _ViewCardWidgetState extends State<ViewCardWidget> {
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                width: CARD_WIDTH * widget.size * 1.8,
-                height: CARD_HEIGHT * widget.size * 0.9,
+                width: CARD_WIDTH * 1.8,
+                height: CARD_HEIGHT * 0.9,
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.black54.withOpacity(0.3),
