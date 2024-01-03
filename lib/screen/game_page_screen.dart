@@ -141,15 +141,6 @@ class _GamePageScreenState extends State<GamePageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    CardModel dumpCard01 = CardModel(
-        image: 'https://deckofcardsapi.com/static/img/0H.png',
-        suit: 'HEARTS',
-        value: '10');
-    CardModel dumpCard02 = CardModel(
-        image: 'https://deckofcardsapi.com/static/img/0H.png',
-        suit: 'HEARTS',
-        value: '10');
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Game Page Screen'),
