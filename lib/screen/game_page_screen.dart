@@ -16,6 +16,7 @@ class _GamePageScreenState extends State<GamePageScreen> {
   List<String> selectUser = [];
   List<String> compareResult = [];
   List<String> selectResult = [];
+  bool _isLoading = true;
   DrawCardModel getCards = DrawCardModel(remaining: 1, cards: [
     CardModel(
         image: 'https://deckofcardsapi.com/static/img/0H.png',
@@ -31,10 +32,12 @@ class _GamePageScreenState extends State<GamePageScreen> {
   }
 
   Future<void> initialData() async {
+    _isLoading = true;
     getCards = await getDataTest();
     compareResult = compareCardValues(getCards.cards);
     logger.info('qwerasdf $compareResult');
     logger.info('qwerasdf ${compareResult.length}');
+    _isLoading = false;
     setState(() {});
   }
 
@@ -622,116 +625,138 @@ class _GamePageScreenState extends State<GamePageScreen> {
         title: const Text('Game Page Screen'),
         actions: [
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: GestureDetector(
               onTap: () {
                 reset();
               },
-              child: Icon(
+              child: const Icon(
                 Icons.refresh,
               ),
             ),
           ),
         ],
       ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 32.0,
-          ),
-          ViewCardWidget(cardModel: dumpCard02),
-          // ViewCardWidget(cards: cardsList),
-          // PageViewCardWidget(cards: cardsList),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: 200,
+      body: _isLoading
+          ? const Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  selectUser.isNotEmpty
-                      ? Expanded(
-                          child: ListView.builder(
-                            controller: _scrollController,
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemCount: selectUser.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return ListTile(
-                                title: Text(
-                                  '${index + 1} 번째 player1 => ${selectUser[index]} | Result => ${selectResult[index]}',
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: (selectResult[index] == 'GOOD')
-                                        ? Colors.blue[400]
-                                        : Colors.red[400],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        )
-                      : const Center(
-                          child: Text(
-                            'No items',
-                          ),
-                        ),
+                  Text(
+                    'Mixing cards',
+                    style: TextStyle(
+                      fontSize: 32.0,
+                    ),
+                  ),
+                  CircularProgressIndicator(),
                 ],
               ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.4,
-                child: ElevatedButton(
-                  onPressed: () {
-                    selectUser.add('UP');
-                    (compareResult[selectUser.length - 1] == selectUser.last)
-                        ? selectResult.add('GOOD')
-                        : selectResult.add('WRONG');
-                    setState(() {});
-                    scrollDown();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue[300],
-                  ),
-                  child: const Text(
-                    'UP',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32.0,
-                      fontWeight: FontWeight.bold,
+            )
+          : Column(
+              children: [
+                ViewCardWidget(cardModel: dumpCard02),
+                // ViewCardWidget(cards: cardsList),
+                // PageViewCardWidget(cards: cardsList),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: 200,
+                    child: Column(
+                      children: [
+                        selectUser.isNotEmpty
+                            ? Expanded(
+                                child: ListView.builder(
+                                  controller: _scrollController,
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  itemCount: selectUser.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return ListTile(
+                                      title: Text(
+                                        '${index + 1} 번째 player1 => ${selectUser[index]} | Result => ${selectResult[index]}',
+                                        style: TextStyle(
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: (selectResult[index] == 'GOOD')
+                                              ? Colors.blue[400]
+                                              : Colors.red[400],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              )
+                            : const Center(
+                                child: Text(
+                                  'No items',
+                                ),
+                              ),
+                      ],
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.4,
-                child: ElevatedButton(
-                  onPressed: () {
-                    selectUser.add('DOWN');
-                    (compareResult[selectUser.length - 1] != selectUser.last)
-                        ? selectResult.add('GOOD')
-                        : selectResult.add('WRONG');
-                    setState(() {});
-                    scrollDown();
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red[300]),
-                  child: const Text(
-                    'DOWN',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32.0,
-                      fontWeight: FontWeight.bold,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          selectUser.add('UP');
+                          (compareResult[selectUser.length - 1] ==
+                                  selectUser.last)
+                              ? selectResult.add('GOOD')
+                              : selectResult.add('WRONG');
+                          setState(() {});
+                          scrollDown();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue[300],
+                        ),
+                        child: const Text(
+                          'UP',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 32.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          selectUser.add('DOWN');
+                          (compareResult[selectUser.length - 1] !=
+                                  selectUser.last)
+                              ? selectResult.add('GOOD')
+                              : selectResult.add('WRONG');
+                          setState(() {});
+                          scrollDown();
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red[300]),
+                        child: const Text(
+                          'DOWN',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 32.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
+                const SizedBox(
+                  height: 56.0,
+                ),
+
+                // reset 버튼 제거 우측 상단으로 이동
+                /**
           Padding(
             padding: const EdgeInsets.all(32.0),
             child: SizedBox(
@@ -755,8 +780,9 @@ class _GamePageScreenState extends State<GamePageScreen> {
               ),
             ),
           ),
-        ],
-      ),
+           */
+              ],
+            ),
     );
   }
 }
