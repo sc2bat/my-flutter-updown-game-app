@@ -620,6 +620,19 @@ class _GamePageScreenState extends State<GamePageScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Game Page Screen'),
+        actions: [
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: GestureDetector(
+              onTap: () {
+                reset();
+              },
+              child: Icon(
+                Icons.refresh,
+              ),
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [
