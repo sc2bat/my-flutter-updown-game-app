@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:updown_game_app/const/constants.dart';
-import 'package:updown_game_app/logger/logger.dart';
+// import 'package:updown_game_app/logger/logger.dart';
 import 'package:updown_game_app/model/card_model.dart';
 
 class ViewCardWidget extends StatefulWidget {

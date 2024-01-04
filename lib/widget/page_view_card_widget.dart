@@ -18,7 +18,7 @@ class PageViewCardWidget extends StatefulWidget {
 }
 
 class _PageViewCardWidgetState extends State<PageViewCardWidget> {
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
 
   int _currentPage = 0;
   @override

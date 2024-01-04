@@ -19,7 +19,7 @@ class ViewCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
+      child: SizedBox(
         height: CARD_HEIGHT * 1,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
@@ -42,7 +42,7 @@ class ViewCardWidget extends StatelessWidget {
                         width: CARD_WIDTH * 1,
                         height: CARD_HEIGHT * 1,
                       )
-                    : Container(
+                    : const SizedBox(
                         width: CARD_WIDTH * 1,
                         height: CARD_HEIGHT * 1,
                       ),

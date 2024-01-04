@@ -3,7 +3,7 @@ import 'package:updown_game_app/const/constants.dart';
 import 'package:updown_game_app/logger/logger.dart';
 import 'package:updown_game_app/model/card_model.dart';
 import 'package:updown_game_app/model/draw_card_model.dart';
-import 'package:updown_game_app/repository/card_repository.dart';
+// import 'package:updown_game_app/repository/card_repository.dart';
 import 'package:updown_game_app/service/deck_service.dart';
 import 'package:updown_game_app/widget/view_card_widget.dart';
 
@@ -112,7 +112,6 @@ class _GamePageScreenState extends State<GamePageScreen> {
           card.value = '13';
           break;
         default:
-          // 다른 경우에 대한 처리 (필요에 따라 추가)
           break;
       }
     }
@@ -181,7 +180,7 @@ class _GamePageScreenState extends State<GamePageScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Container(
+                  child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: 200,
                     child: Column(
